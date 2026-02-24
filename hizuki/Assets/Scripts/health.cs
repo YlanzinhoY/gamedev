@@ -1,10 +1,10 @@
+using System;
 using UnityEngine;
 
 public class Health : MonoBehaviour, IDamageable
 {
-
     public int life;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         
@@ -25,5 +25,6 @@ public class Health : MonoBehaviour, IDamageable
     {
         life -= damage;
         Debug.Log(damage);
+      
     }
 }
