@@ -1,0 +1,7 @@
+:root {
+}
+
+.hit_class {
+    color: #171616;
+    text-shadow: #cc0c15 1px 1px 1px;
+}

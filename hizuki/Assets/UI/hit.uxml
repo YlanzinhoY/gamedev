@@ -1,0 +1,7 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/hit_style.uss?fileID=7433441132597879392&amp;guid=9b7ded1d034fdbb489cfcdbe98dad967&amp;type=3#hit_style"/>
+    <ui:GroupBox style="justify-content: center; align-items: flex-start; align-self: flex-start;">
+        <ui:Label text="HIT 👊" enable-rich-text="true" emoji-fallback-support="true" name="hit" class="hit_class" style="-unity-font-style: bold; font-size: 45px;"/>
+        <ui:Label text="0" enable-rich-text="true" emoji-fallback-support="true" name="damage" class="hit_class" style="-unity-font-style: bold; font-size: 45px;"/>
+    </ui:GroupBox>
+</ui:UXML>
