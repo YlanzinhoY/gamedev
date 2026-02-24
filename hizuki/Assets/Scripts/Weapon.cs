@@ -1,23 +1,22 @@
+using System;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private Collider2D weaponCollider;
-    [SerializeField] private WeaponData weaponData;
+    [SerializeField] public WeaponData weaponData;
+    public static event Action<int> OnHitDamage;
 
     private void Start()
     {
-        weaponCollider.enabled = false; // começa desligado
+        weaponCollider.enabled = false;
     }
 
     public void PerformAttack()
     {
-      
         CancelInvoke(nameof(DisableCollider));
-
     
         weaponCollider.enabled = true;
-
         
         Invoke(nameof(DisableCollider), weaponData.attackSpeed);
     }
@@ -29,13 +28,21 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // Só dá dano se colidir com inimigo
+      
         if (collision.gameObject.layer != LayerMask.NameToLayer("enemy")) return;
 
         if (collision.TryGetComponent<IDamageable>(out var damageable))
         {
             damageable.TakeDamage(weaponData.damage);
             Debug.Log("Dano aplicado em: " + collision.name);
+            
+            
+            
+            OnHitDamage?.Invoke(weaponData.damage);
+            Debug.Log($"Disparando evento. Listeners: {OnHitDamage?.GetInvocationList().Length}");
+            
+            
+            
         }
     }
 }
