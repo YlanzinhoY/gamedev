@@ -105,8 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35bd7eaf1591ec649a78802d23fcd8e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  weaponData: {fileID: 11400000, guid: 23693214ed2d8014f865d02114d9b676, type: 2}
   weaponCollider: {fileID: 2996102283592969182}
+  weaponData: {fileID: 11400000, guid: 23693214ed2d8014f865d02114d9b676, type: 2}
 --- !u!61 &2996102283592969182
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -114,7 +114,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5681852044069964958}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
