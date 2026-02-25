@@ -7,11 +7,15 @@ public class Weapon : MonoBehaviour
     [SerializeField] public WeaponData weaponData;
     public static event Action<int> OnHitDamage;
 
-    private void Start()
+    private void Awake()
     {
+       
+        if (weaponCollider == null)
+            weaponCollider = GetComponentInChildren<Collider2D>();
+
         weaponCollider.enabled = false;
     }
-
+    
     public void PerformAttack()
     {
         CancelInvoke(nameof(DisableCollider));
@@ -37,11 +41,8 @@ public class Weapon : MonoBehaviour
             Debug.Log("Dano aplicado em: " + collision.name);
             
             
-            
             OnHitDamage?.Invoke(weaponData.damage);
             Debug.Log($"Disparando evento. Listeners: {OnHitDamage?.GetInvocationList().Length}");
-            
-            
             
         }
     }

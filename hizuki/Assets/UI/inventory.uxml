@@ -1,9 +1,9 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/inventory.uss?fileID=7433441132597879392&amp;guid=a388f7cd4fad47b3b483dfb40dc40d11&amp;type=3#inventory"/>
     <ui:VisualElement name="VisualElement" class="main" style="height: 1075px;">
-        <ui:VisualElement class="base_weapon_circle">
+        <ui:VisualElement class="base_weapon_circle" style="width: 142px;">
             <ui:Image name="leftArrow" source="project://database/Assets/sprites/arrowleft.png?fileID=2800000&amp;guid=54434669ea4fa7144b386df7e1de99ca&amp;type=3#arrowleft" class="arrow"/>
-            <ui:Image name="weaponImage" class="weapon-image"/>
+            <ui:Image name="weaponImage" source="project://database/Assets/sprites/dark-sword.png?fileID=2800000&amp;guid=7b4e85ab78f89534ca76c3aa07b5d8bb&amp;type=3#dark-sword" class="weapon-image" />
             <ui:Image name="rightArrow" source="project://database/Assets/sprites/arrow.aseprite?fileID=-7221779538223188465&amp;guid=bca4ee9d3c90dae4d8d7619bd65f7c83&amp;type=3#arrow" class="arrow"/>
         </ui:VisualElement>
     </ui:VisualElement>
