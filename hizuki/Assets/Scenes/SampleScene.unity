@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 384074317}
   - component: {fileID: 384074316}
   m_Layer: 0
-  m_Name: UI
+  m_Name: hit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,12 +145,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384074314}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.50226, y: -9.31259, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.9857998, y: -1.6863694, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1530047584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &384074316
 MonoBehaviour:
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hit
   hitUIDocument: {fileID: 384074316}
-  timeBeforeHidden: 3
+  timeBeforeHidden: 5
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,7 +557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1530047584}
   m_Layer: 0
-  m_Name: objects
+  m_Name: ui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -575,7 +575,8 @@ Transform:
   m_LocalPosition: {x: -16.51646, y: -7.62622, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 384074315}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1738637452 stripped
@@ -1010,4 +1011,3 @@ SceneRoots:
   - {fileID: 948122109}
   - {fileID: 1989448297}
   - {fileID: 1530047584}
-  - {fileID: 384074315}

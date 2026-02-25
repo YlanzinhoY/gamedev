@@ -1,0 +1,31 @@
+﻿.main {
+    background-color: aqua;
+    display: flex;
+}
+
+.base_weapon_circle {
+    background-color: blueviolet;
+    border-radius: 50%;
+    width: 145px;
+    height: 145px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 60px 60px 60px 60px;
+}
+
+.arrow {
+    width: 32px;
+    height: 32px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.weapon-image {
+    width: 96px;
+    height: 96px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.test {
+    font-size: 25px;
+}
