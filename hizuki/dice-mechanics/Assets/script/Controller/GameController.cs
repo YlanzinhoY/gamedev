@@ -17,15 +17,15 @@ namespace script.Controller
         [SerializeField] private Sprite winSprite;
         [SerializeField] private Sprite loseSprite;
         [SerializeField] private Dice dice;
+        [SerializeField] private int _retry;
 
         private Image _scorePoint;
         private Label _retryLabel;
         private int _rounded = 1;
         private int? _point;
-        private int _retry = 6;
+        
 
         private List<int> _scoreMemory = new();
-        
         private ITurnStateService _currentTurn;
     
 
@@ -36,17 +36,14 @@ namespace script.Controller
             _scorePoint =  mainContainer.Q<Image>($"rodada-{_rounded}");
             
             _retryLabel = retryUI.rootVisualElement.Q<Label>("retry");
-            
-            _retryLabel.text = (_retry - 1).ToString();
 
-            _retry = 5;
+            _retryLabel.text = _retry.ToString();
 
             _currentTurn = new PlayerController();
         }
 
         private void OnEnable() => Dice.OnGameStatus += GameManager;
         private void OnDisable() => Dice.OnGameStatus -= GameManager;
-
 
         private void GameManager(int sum, MatchState? matchState)
         {
@@ -58,21 +55,23 @@ namespace script.Controller
         public void ResolveRoll(int sum, MatchState? result, bool isPlayerTurn)
         {
             var image = scoreboardUi.rootVisualElement.Q<Image>($"rodada-{_rounded}");
+            var point = retryUI.rootVisualElement.Q<Label>("point");
 
             if (_point == null)
             {
                 switch (result)
                 {
                     case MatchState.Win:
-                        FinishRound(image, isPlayerTurn, true);
+                        FinishRound(image, point, isPlayerTurn, true);
                         break;
 
                     case MatchState.Lose:
-                        FinishRound(image, isPlayerTurn, false);
+                        FinishRound(image, point, isPlayerTurn, false);
                         break;
 
                     case MatchState.Point:
                         _point = sum;
+                        point.text = $"Point: {_point}";
                         break;
                     case null:
                         break;
@@ -87,20 +86,20 @@ namespace script.Controller
 
             if (sum == _point)
             {
-                FinishRound(image, isPlayerTurn, true);
+                FinishRound(image, point ,isPlayerTurn, true);
                 return;
             }
 
             if (sum == 7)
             {
-                FinishRound(image, isPlayerTurn, false);
+                FinishRound(image, point, isPlayerTurn, false);
             }
         }
         
         
         public bool AttemptsEnded()
         {
-            return _retry <= 0;
+            return _retry == 0 || _retry <= 0;
         }
         
         public void ChangeTurn(ITurnStateService newTurn)
@@ -109,6 +108,14 @@ namespace script.Controller
             _retry = 5;
             _retryLabel.text = _retry.ToString();
             _point = null;
+
+            if (newTurn is CpuController)
+            {
+                TurnController._canRoll = false;
+                RollCpu();
+            }
+
+            TurnController._canRoll = true;
         }
         
         public void RollCpu()
@@ -116,7 +123,7 @@ namespace script.Controller
             dice.CpuPlay();
         }
         
-        private void FinishRound(Image image, bool isPlayerTurn, bool playerWonLogic)
+        private void FinishRound(Image image, Label point, bool isPlayerTurn, bool playerWonLogic)
         {
             
             var finalResult = isPlayerTurn switch
@@ -130,6 +137,7 @@ namespace script.Controller
             _scoreMemory.Add(finalResult ? 1 : 0);
 
             _point = null;
+            point.text = "Point: ";
             _rounded++;
 
             FinalGameCheck();
