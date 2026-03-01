@@ -1,3 +1,4 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Label text="3" name="retry" style="font-size: 22px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
+    <ui:Label text="5" name="retry" style="font-size: 35px; -unity-font-style: bold; color: rgb(255, 255, 255);"/>
+    <ui:Label text="Point: " name="point" style="color: rgb(255, 242, 242); font-size: 32px; -unity-font-style: bold; padding-top: 12px;"/>
 </ui:UXML>

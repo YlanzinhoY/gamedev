@@ -526,6 +526,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5346421362760799766, guid: 67a9acf4be8c0de41ba038447bbfdb70, type: 3}
+      propertyPath: throwForce
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5808895607877962389, guid: 67a9acf4be8c0de41ba038447bbfdb70, type: 3}
       propertyPath: m_Name
       value: dice

@@ -16,7 +16,7 @@ public class Dice : MonoBehaviour
     [SerializeField] private GameObject diceFace2;
     [SerializeField, Range(1,20)] private int  throwForce;
 
-    public static event Action<int, string> OnGameStatus;
+    public static event Action<int, MatchState?> OnGameStatus;
     
     
     private int _finalDiceFace;
@@ -70,18 +70,12 @@ public class Dice : MonoBehaviour
         var state = craps.GameState(sum);
         
         OnGameStatus?.Invoke(sum, state);
-        
-        Debug.Log(sum);
-        Debug.Log(state);
 
     }
     
     public void CpuPlay()
     {
-        
         Debug.Log("CPU está jogando...");
-        TurnController.IsCpuAlive = true;
-        
         StartCoroutine(nameof(CpuRoll));
     }
 
@@ -109,7 +103,6 @@ public class Dice : MonoBehaviour
         var craps = new Craps();
         var state = craps.GameState(sum);
         
-
         OnGameStatus?.Invoke(sum, state);
     }
     

@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using script.Controller;
 
 namespace script
 {
     public class Craps
     {
 
-        private readonly Dictionary<string, List<int>> GameRules = new()
+        private readonly Dictionary<MatchState, List<int>> GameRules = new()
         {
-            { "win", new List<int> { 7, 11 } },
-            { "lose", new List<int> { 2, 3, 12 } },
-            { "point", new List<int> { 4, 5, 6, 8, 9, 10 } }
+            { MatchState.Win, new List<int> { 7, 11 } },
+            { MatchState.Lose, new List<int> { 2, 3, 12 } },
+            { MatchState.Point, new List<int> { 4, 5, 6, 8, 9, 10 } }
         };
         
 
-        public string GameState(int diceSum)
+        public MatchState? GameState(int diceSum)
         {
 
             foreach (var rule in GameRules)
@@ -24,7 +25,7 @@ namespace script
                 }
             }
 
-            return "";
+            return null;
         }
         
 

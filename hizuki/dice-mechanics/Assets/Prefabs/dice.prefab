@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 8472685841641678156}
   - component: {fileID: 5346421362760799766}
   - component: {fileID: 5897347986180936208}
+  - component: {fileID: 4330542323904789006}
   m_Layer: 0
   m_Name: dice
   m_TagString: Untagged
@@ -140,8 +141,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::script.Controller.GameController
   scoreboardUi: {fileID: 0}
+  retryUI: {fileID: 0}
   winSprite: {fileID: 8875314174644223432, guid: 50311701ad8c1d144b208bb4c2cbcf30, type: 3}
   loseSprite: {fileID: 6367366349358987470, guid: 00d7e7e1cc2f09f4b8cd69e384de3308, type: 3}
+  dice: {fileID: 5346421362760799766}
 --- !u!114 &5346421362760799766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,7 +166,7 @@ MonoBehaviour:
   - {fileID: 5828231779307674695, guid: fe4f44789ca27ce428ca288011250c3a, type: 3}
   diceFace1: {fileID: 2426091819227225570}
   diceFace2: {fileID: 6659293672369002109}
-  throwForce: 10
+  throwForce: 15
 --- !u!114 &5897347986180936208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +213,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &4330542323904789006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5808895607877962389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b8e4eab948c4c9c9fbf227472800b8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::script.Controller.TurnController
 --- !u!1 &6659293672369002109
 GameObject:
   m_ObjectHideFlags: 0

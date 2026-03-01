@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using script.Service;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -23,208 +24,136 @@ namespace script.Controller
         private int? _point;
         private int _retry = 6;
 
-        private List<int> _scoreMemory = new List<int>();
+        private List<int> _scoreMemory = new();
+        
+        private ITurnStateService _currentTurn;
     
 
         private void Awake()
         {
             var mainContainer = scoreboardUi.rootVisualElement;
+            
             _scorePoint =  mainContainer.Q<Image>($"rodada-{_rounded}");
             
             _retryLabel = retryUI.rootVisualElement.Q<Label>("retry");
+            
             _retryLabel.text = (_retry - 1).ToString();
 
             _retry = 5;
-        }
 
+            _currentTurn = new PlayerController();
+        }
 
         private void OnEnable() => Dice.OnGameStatus += GameManager;
         private void OnDisable() => Dice.OnGameStatus -= GameManager;
 
 
-        void GameManager(int sum, string gameCondition)
+        private void GameManager(int sum, MatchState? matchState)
         {
+            if(matchState != null)
+                _currentTurn.Play(this, sum,  matchState);
             FinalGameCheck();
-            
-            if (TurnController.IsPlayerPlaying)
+        }
+        
+        public void ResolveRoll(int sum, MatchState? result, bool isPlayerTurn)
+        {
+            var image = scoreboardUi.rootVisualElement.Q<Image>($"rodada-{_rounded}");
+
+            if (_point == null)
             {
-                Game(sum, gameCondition);
-
-                if (_retry <= 0)
+                switch (result)
                 {
-                    Debug.Log("Player terminou tentativas");
+                    case MatchState.Win:
+                        FinishRound(image, isPlayerTurn, true);
+                        break;
 
-                    _retry = 5;
-                    _retryLabel.text = _retry.ToString();
+                    case MatchState.Lose:
+                        FinishRound(image, isPlayerTurn, false);
+                        break;
 
-                    TurnController.IsPlayerPlaying = false;
-                    TurnController.IsCpuAlive = true;
-                    _point = null;
-                    TurnController._canRoll = false;
-                    dice.CpuPlay();
+                    case MatchState.Point:
+                        _point = sum;
+                        break;
+                    case null:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(result), result, null);
                 }
+
+                return;
             }
-            else if (TurnController.IsCpuAlive)
+
+            DecreaseAttempt();
+
+            if (sum == _point)
             {
-                Game(sum, gameCondition);
+                FinishRound(image, isPlayerTurn, true);
+                return;
+            }
 
-                if (_retry <= 0)
-                {
-                    Debug.Log("CPU terminou tentativas");
-
-                    _retry = 5;
-                    _retryLabel.text = _retry.ToString();
-                    _point = null;
-                    TurnController._canRoll = true;
-                    TurnController.IsCpuAlive = false;
-                    TurnController.IsPlayerPlaying = true;
-                }
-                else
-                {
-                    dice.CpuPlay();
-                }
+            if (sum == 7)
+            {
+                FinishRound(image, isPlayerTurn, false);
             }
         }
         
-        void DecreaseAttempt()
+        
+        public bool AttemptsEnded()
+        {
+            return _retry <= 0;
+        }
+        
+        public void ChangeTurn(ITurnStateService newTurn)
+        {
+            _currentTurn = newTurn;
+            _retry = 5;
+            _retryLabel.text = _retry.ToString();
+            _point = null;
+        }
+        
+        public void RollCpu()
+        {
+            dice.CpuPlay();
+        }
+        
+        private void FinishRound(Image image, bool isPlayerTurn, bool playerWonLogic)
+        {
+            
+            var finalResult = isPlayerTurn switch
+            {
+                true  => playerWonLogic,
+                false => !playerWonLogic
+            };
+
+            image.sprite = finalResult ? winSprite : loseSprite;
+
+            _scoreMemory.Add(finalResult ? 1 : 0);
+
+            _point = null;
+            _rounded++;
+
+            FinalGameCheck();
+        }
+        
+        private void DecreaseAttempt()
         {
             _retry--;
             _retryLabel.text = _retry.ToString();
         }
         
-        void Game(int sum, string gameCondition)
+        private void FinalGameCheck()
         {
-            var container = scoreboardUi.rootVisualElement;
-            var image = container.Q<Image>($"rodada-{_rounded}");
-
-            
-            Debug.Log($"Sum: {sum}");
-            Debug.Log($"Condition: {gameCondition}");
-            Debug.Log($"memory {_scoreMemory.Count}");
-
-            if (_point == null)
-            {
-                
-                if (gameCondition == "win")
-                {
-                    if (TurnController.IsPlayerPlaying)
-                    {
-                        image.sprite = winSprite;
-                        _rounded++;
-                        _scoreMemory.Add(1);
-                        FinalGameCheck();
-                        return;
-                    }
-
-                    if (TurnController.IsCpuAlive)
-                    {
-                        image.sprite = loseSprite;
-                        _scoreMemory.Add(0);
-                        _rounded++;
-                        FinalGameCheck();
-                    }
-                }
-                else if (gameCondition == "lose")
-                {
-                    if (TurnController.IsPlayerPlaying)
-                    {
-                        image.sprite = loseSprite;
-                        _rounded++;
-                        _scoreMemory.Add(0);
-                        FinalGameCheck();
-                        return;
-                    }
-                    
-                    if (TurnController.IsCpuAlive)
-                    {
-                        image.sprite = winSprite;
-                        _rounded++;
-                        _scoreMemory.Add(1);
-                        FinalGameCheck();
-                    }
-                }
-                else if (gameCondition == "point")
-                {
-                    _point = sum;
-                    Debug.Log($"Point definido: {_point}");
-                }
-                
-                return;
-            }
-            
-            
-            if (_point != null)
-            {
-                DecreaseAttempt();
-                if (sum == _point)
-                {
-                    if (TurnController.IsPlayerPlaying)
-                    {
-                        image.sprite = winSprite;
-                        _rounded++;
-                        _point = null;
-                        _scoreMemory.Add(1);
-                        FinalGameCheck();
-                        return;
-                    }
-
-                    if (TurnController.IsCpuAlive)
-                    {
-                        image.sprite = loseSprite;
-                        _point = null;
-                        _rounded++;
-                        _scoreMemory.Add(0);
-                        FinalGameCheck();
-                    }
-                }
-                else if (sum == 7)
-                {
-                    if (TurnController.IsPlayerPlaying)
-                    {
-                        image.sprite = loseSprite;
-                        _point = null;
-                        _rounded++;
-                        _scoreMemory.Add(0);
-                        FinalGameCheck();
-                        return;
-                    }
-                    
-                    if (TurnController.IsCpuAlive)
-                    {
-                        image.sprite = winSprite;
-                        _point = null;
-                        _rounded++;
-                        _scoreMemory.Add(1);
-                        FinalGameCheck();
-                    }
-                }
-            }
-        }
-
-        void FinalGameCheck()
-        {
-
             var win = _scoreMemory.Count(x => x == 1) >= 3;
             var lose = _scoreMemory.Count(x => x == 0) >= 3;
 
-            if (win)
+            if (win || lose)
             {
-                TurnController.IsPlayerPlaying = false;
-                TurnController.IsCpuAlive = false;
+                TurnController._canRoll = false;
                 Time.timeScale = 0f;
-                Debug.Log($"Final Game: you WIN");
-                return;
+                Debug.Log(win ? "YOU WIN" : "YOU LOSE");
             }
-
-            if (lose)
-            {
-                TurnController.IsPlayerPlaying = false;
-                TurnController.IsCpuAlive = false;
-                Time.timeScale = 0f;
-                Debug.Log("Final Game game: You lose");
-            }
-            
         }
+        
 
     }
 }
